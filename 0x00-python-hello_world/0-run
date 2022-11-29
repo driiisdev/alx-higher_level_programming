@@ -1,2 +1,2 @@
 #!/bin/bash
-python $PYFILE; mv ./_pycache_/*.pyc "${FILE}c"
+python $PYFILE
