@@ -76,10 +76,8 @@ int *getArray(listint_t **temp, int j)
 	if (j % 2 == 0)
 		a = j / 2;
 	else
-    a = (j - 1) / 2;
-
+	       a = (j - 1) / 2;
 	list = (int *)malloc(sizeof(int) * a);
-  
 	for (b = 0; b < a; b++)
 	{
 		list[b] = tem->n;
