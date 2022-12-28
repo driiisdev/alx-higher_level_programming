@@ -1,22 +1,25 @@
 #!/usr/bin/python3
+
 """
-This is the "Single Linked List" module.
-
-Class Node takes in integer values as data within each node,
-and a next attribute which points to the next node or to None.
-
-Class SinglyLinkedList initializes a default head of None.
-Method sorted_insert handles all nodes created and adds them to
-the linked list sorted by the int value stored within.
+This is a module that provides classes Node
+object and SinglyLinkedList object
 """
 
 
 class Node:
-    """A class that creates a single Node in a Linked List.
+
     """
+    This is a Node object for singly linked lists which has private
+    attributes data which must be an integer and next_node which must be
+    of object type "Node"
+    """
+
     def __init__(self, data, next_node=None):
-        self.data = data
-        self.next_node = next_node
+        """
+        This is the initializer function for class Node
+        """
+        self.__data = data
+        self.__next_node = next_node
 
     @property
     def data(self):
@@ -26,7 +29,8 @@ class Node:
     def data(self, value):
         if type(value) != int:
             raise TypeError("data must be an integer")
-        self.__data = value
+        else:
+            self.__data = value
 
     @property
     def next_node(self):
@@ -34,40 +38,59 @@ class Node:
 
     @next_node.setter
     def next_node(self, value):
-        if not (value is None or type(value) is Node):
-            raise TypeError("next must be a Node object")
-        self.__next_node = value
+        if type(value) != Node:
+            raise TypeError("next_node must be a Node object")
+        else:
+            self.__next_node = value
 
 
 class SinglyLinkedList:
-    """A class that creates a Singly Linked List.
     """
+    This is a Singly linked list object used to build and
+    add node to a singly linked list
+    """
+
     def __init__(self):
         self.__head = None
 
-    def __repr__(self):
+    def __str__(self):
+        list = ""
         temp = self.__head
-        total = ""
-        while temp:
-            total += "{:d}".format(temp.data)
+        while temp is not None:
+            list += "{}".format(temp.data) + "\n"
             temp = temp.next_node
-            if temp:
-                total += "\n"
-        return total
+        list = list[:(len(list) - 1)]
+        return list
 
     def sorted_insert(self, value):
+        """
+        sorted_insert: This method is used to add a new node to the
+        singly linked list
+        Args:
+        self: instance of object
+        value: integer data to be in added node
+        """
+        new = Node(value)
         if self.__head is None:
-            self.__head = Node(value)
-        else:
-            curr = self.__head
-            prev = None
-            while curr and value > curr.data:
-                prev = curr
-                curr = curr.next_node
-            if curr is None:
-                prev.next_node = Node(value)
-            elif curr is self.__head and prev is None:
-                self.__head = Node(value, curr)
+            self.__head = new
+            return
+        temp = self.__head
+        temp1 = self.__head.next_node
+        if value <= temp.data:
+                new.next_node = temp
+                self.__head = new
+                return
+        elif temp1 is None:
+                temp.next_node = new
+                return
+        while temp is not None:
+            if temp.data <= value <= temp1.data:
+                temp.next_node = new
+                new.next_node = temp1
+                break
+            temp = temp1
+            if temp1.next_node is not None:
+                temp1 = temp1.next_node
             else:
-                newNode = Node(value, curr)
-                prev.next_node = newNode
+                temp.next_node = new
+                break

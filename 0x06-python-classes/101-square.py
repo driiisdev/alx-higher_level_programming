@@ -1,7 +1,7 @@
 #!/usr/bin/python3
+
 """
 This is the "Square"  module.
-
 This module provides a simple Square class with initialize size.
 Defaults size to 0. Raise error on invalid size inputs.
 Attribute position which takes a default (0, 0) tuple.
@@ -9,7 +9,6 @@ Methods Getter and Setter properties for size and position.
 Method area returns size of area of the square.
 Method my_print prints the square using "#", moved over left and top using
 position tuple.
-Method __repr__ should return the string to print out the square.
 """
 
 
@@ -22,6 +21,20 @@ class Square:
     def __init__(self, size=0, position=(0, 0)):
         self.size = size
         self.position = position
+
+    def __repr__(self):
+        string = ""
+        if self.__size == 0:
+            return ""
+        for row in range(self.__position[1]):
+            string += "\n"
+        for x in range(self.__size):
+            for space in range(self.__position[0]):
+                string += " "
+            for i in range(self.__size):
+                string += "#"
+            string += "\n"
+        return string[:-1]
 
     @property
     def size(self):
@@ -42,29 +55,20 @@ class Square:
     @position.setter
     def position(self, value):
         if type(value) != tuple or len(value) != 2 or \
-           not all([type(i) == int for i in value]):
+           not all([type(i) == int for i in value]) or \
+           not all([i >= 0 for i in value]):
             raise TypeError("position must be a tuple of 2 positive integers")
         self.__position = value
-
-    def __repr__(self):
-        return (self.get_str())
 
     def area(self):
         return self.__size * self.__size
 
-    def get_str(self):
-        total = ""
-        if self.__size is 0:
-            total += "\n"
-            return total
-        for i in range(self.__position[1]):
-            total += "\n"
-        for i in range(self.__size):
-            total += (" " * self.__position[0])
-            total += ("#" * self.__size)
-            if i is not (self.__size - 1):
-                total += "\n"
-        return total
-
     def my_print(self):
-        print(self.get_str())
+        if self.__size == 0:
+            print("")
+            return
+        for i in range(self.__position[1]):
+            print("")
+        for i in range(self.__size):
+            print(" " * self.__position[0], end="")
+            print("#" * self.__size)
