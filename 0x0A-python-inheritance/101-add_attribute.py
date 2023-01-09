@@ -9,7 +9,7 @@ def add_attribute(obj, a, v):
 
     """using if/else statement instead of try/except"""
 
-    if res is False:
+    if res is False or obj is None:
         """if res is false, raise error"""
         raise TypeError("can't add new attribute")
     elif res is None:
