@@ -7,8 +7,8 @@ def add_attribute(obj, a, v):
 
     res = getattr(obj, "__doc__", None)
 
-    """using if/else statement instead of try/except"""
     if res is None:
+        """using if/else statement instead of try/except"""
         setattr(obj, a, v)
-    
-    raise TypeError("can't add new attribute")
+    else:
+        raise TypeError("can't add new attribute")
