@@ -11,7 +11,7 @@ def add_attribute(obj, a, v):
     if res is None:
         """setattr if obj gotten is none"""
         setattr(obj, a, v)
-    elif not setattr(obj, a, v):
+    elif setattr(obj, a, v) == AttributeError:
         """if  not setattr, raise error"""
         raise TypeError("can't add new attribute")
     else:
