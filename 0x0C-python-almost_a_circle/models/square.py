@@ -1,81 +1,95 @@
 #!/usr/bin/python3
 """
-class Square: iinherits from Rectangle
+Square class module
 """
+
 from models.rectangle import Rectangle
 
 
 class Square(Rectangle):
     """
-    class Square: inherits from Rectangle
+    Square class
     """
 
     def __init__(self, size, x=0, y=0, id=None):
         """
-        __init__ method
+        init method
         """
-        super().__init__(size, size, x, y, id)
+        super().__init__(width=size, height=size, x=x, y=y, id=id)
+
+    def __str__(self):
+        """
+        string representation
+        """
+        return "[Square] ({}) {}/{} - {}".\
+            format(self.id, self.x, self.y, self.width)
 
     @property
     def size(self):
         """
-        size property
+        size getter
         """
         return self.width
 
     @size.setter
-    def size(self, value):
+    def size(self, width):
         """
         size setter
         """
-        self.width = value
-        self.height = value
-
-    def __str__(self):
-        """
-        __str__ method
-        """
-        return "[Square] ({}) {}/{} - {}".format(
-            self.id, self.x, self.y, self.width)
+        if not isinstance(width, int):
+            raise TypeError("width must be an integer")
+        elif width <= 0:
+            raise ValueError("width must be > 0")
+        else:
+            self.width = width
 
     def update(self, *args, **kwargs):
         """
-        update method
+        Update attributes
         """
-        if args:
-            self.id = args[0] if 0 < len(args) else self.id
-            self.size = args[1] if 1 < len(args) else self.size
-            self.x = args[2] if 2 < len(args) else self.x
-            self.y = args[3] if 3 < len(args) else self.x
+        if len(kwargs) != 0:
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+        elif len(args) != 0:
+            try:
+                self.id = args[0]
+                self.size = args[1]
+                self.x = args[2]
+                self.y = args[3]
+            except IndexError:
+                pass
         else:
-            for key, value in kwargs.items():
-                if key == "id":
-                    self.id = value
-                elif key == "size":
-                    self.size = value
-                elif key == "x":
-                    self.x = value
-                elif key == "y":
-                    self.y = value
-        return self
+            print()
+
+    def update_csv(self, csv):
+        """
+        updates attributes using csv
+        """
+        if len(csv) != 0:
+            a = 0
+            b = csv.index(",")
+            self.id = int(csv[a:b])
+            a = b + 1
+            b = csv.index(",", a)
+            self.size = int(csv[a:b])
+            a = b + 1
+            b = csv.index(",", a)
+            self.x = int(csv[a:b])
+            a = b + 1
+            self.y = int(csv[a])
 
     def to_dictionary(self):
         """
-        to_dictionary method
+        converts to dictionary
         """
-        return {
-            "id": self.id,
-            "size": self.size,
-            "x": self.x,
-            "y": self.y
-        }
+        sqr_dict = {'id': self.id, 'size': self.width, 'x': self.x}
+        sqr_dict['y'] = self.y
+        return sqr_dict
 
-    @classmethod
-    def create(cls, **kwargs):
+    def to_csv(self):
         """
-        create method
+        converts to csv
         """
-        if "x" not in kwargs or "y" not in kwargs:
-            kwargs["x"] = 0
-            kwargs["y"] = 0
-        return cls(**kwargs)
+        sqr_csv = str(self.id) + "," + str(self.size) + "," +\
+            str(self.x) + "," + str(self.y)
+        return sqr_csv
