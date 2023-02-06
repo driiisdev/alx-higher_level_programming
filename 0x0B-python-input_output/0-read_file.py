@@ -1,5 +1,8 @@
 #!/usr/bin/python3
+"""Read text file and prints to stdout"""
+
+
 def read_file(filename=""):
-    with open(filename, encoding="utf-8") as fd:
-        for line in fd:
-            print(line, end="")
+    """Read text file (UTF8) and prints to stdout"""
+    with open(filename, mode='r') as file:
+        print(file.read(), end='')
