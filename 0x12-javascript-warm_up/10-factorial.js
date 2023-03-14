@@ -6,7 +6,7 @@ function factorial (n) {
   if (n === 1 || isNaN(n)) {
     return 1;
   }
-  return (n * factrl(n - 1));
+  return (n * factorial(n - 1));
 }
 
 const n = parseInt(argv[2]);
