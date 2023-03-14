@@ -2,13 +2,12 @@
 
 const argv = process.argv;
 
-function factrl (n) {
-  if (n === 0) {
+function factorial (n) {
+  if (n === 1 || isNaN(n)) {
     return 1;
   }
   return (n * factrl(n - 1));
 }
 
-if (!isNaN(argv[2])) {
-  console.log(factrl(parseInt(argv[2])));
-} else { console.log('NaN'); }
+const n = parseInt(argv[2]);
+console.log(factorial(n));
