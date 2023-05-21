@@ -1,50 +1,32 @@
 #!/usr/bin/python3
-"""Reads from standard input and computes metrics
-"""
+"""This module defines a program that parses logs"""
 
 
-def print_stats(size, status_codes):
-    """Print accumulated metrics
-    """
-    print("File size: {}".format(size))
-    for key in sorted(status_codes):
-        print("{}: {}".format(key, status_codes[key]))
-
-
-if __name__ == "__main__":
-    import sys
-
-    size = 0
-    status_codes = {}
-    valid_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
-    count = 0
-
-    try:
-        for line in sys.stdin:
-            if count == 10:
-                print_stats(size, status_codes)
-                count = 1
-            else:
-                count += 1
-
-            line = line.split()
-
-            try:
-                size += int(line[-1])
-            except (IndexError, ValueError):
-                pass
-
-            try:
-                if line[-2] in valid_codes:
-                    if status_codes.get(line[-2], -1) == -1:
-                        status_codes[line[-2]] = 1
-                    else:
-                        status_codes[line[-2]] += 1
-            except IndexError:
-                pass
-
-        print_stats(size, status_codes)
-
-    except KeyboardInterrupt:
-        print_stats(size, status_codes)
-        raise
+import sys
+codes = ['200', '301', '400', '401',
+         '403', '404', '405', '500']
+code_hist = []
+total_size = 0
+i = 0
+try:
+    for line in sys.stdin:
+        # if line == '':
+        # sys.exit()
+        tokens = line.split(' ')
+        total_size += int(tokens[-1])
+        code_hist.append(tokens[-2])
+        if i == 9:
+            i = 0
+            print('File size: ' + str(total_size))
+            for code in codes:
+                if code in code_hist:
+                    print('{}: {}'.format(code, code_hist.count(code)))
+        else:
+            i += 1
+except KeyboardInterrupt:
+    print('File size: ' + str(total_size))
+    for code in codes:
+        if code in code_hist:
+            print('{}: {}'.format(code, code_hist.count(code)))
+    sys.exit()
+    
